@@ -169,7 +169,7 @@ public class LoaderFromDir extends AbstractLoader {
 
 		Scanner scanner = null;
 		try {
-			scanner = new Scanner(new File(path + "/" + name));
+			scanner = new Scanner(new File(path + "/" + name), "UTF-8");
 
 			while (scanner.hasNextLine()) {
 				contents.append(scanner.nextLine()).append('\n');

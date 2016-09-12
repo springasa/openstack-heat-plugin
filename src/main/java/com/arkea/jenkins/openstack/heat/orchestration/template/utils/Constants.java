@@ -21,7 +21,7 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
  */
 public class Constants {
 
-	public static String PARAMETER_DEFAULTS = "parameter_defaults";
-	public static String PARAMETERS = "parameters";
-	public static String OUTPUTS = "outputs";
+	public final static String PARAMETER_DEFAULTS = "parameter_defaults";
+	public final static String PARAMETERS = "parameters";
+	public final static String OUTPUTS = "outputs";
 }

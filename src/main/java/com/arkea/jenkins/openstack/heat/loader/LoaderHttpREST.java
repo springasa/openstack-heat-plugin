@@ -121,7 +121,7 @@ public class LoaderHttpREST extends AbstractLoader {
 
 		Scanner scanner = null;
 		try {
-			scanner = new Scanner(new URL(path + "/" + name).openStream());
+			scanner = new Scanner(new URL(path + "/" + name).openStream(), "UTF-8");
 
 			while (scanner.hasNextLine()) {
 				contents.append(scanner.nextLine()).append('\n');
