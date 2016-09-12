@@ -9,33 +9,30 @@
 		<version>2.2</version>
 		<relativePath />
 	</parent>
-	<groupId>com.arkea.jenkins</groupId>
+	<properties>
+		<jenkins.version>1.580.1</jenkins.version>
+		<java.level>7</java.level>
+	</properties>
+	<groupId>org.jenkins-ci.plugins</groupId>
 	<artifactId>openstack-heat</artifactId>
 	<version>1.0</version>
 	<packaging>hpi</packaging>
 	<name>Openstack Heat Plugin</name>
+	<url>https://wiki.jenkins-ci.org/display/JENKINS/Openstack+Heat+Plugin</url>
 	<description>This plugin is used to interact with OpenStack via Heat Orchestration Template (HOT).</description>
+	<developers>
+		<developer>
+			<id>draoullig</id>
+			<name>Frederic Gillouard</name>
+			<email>frederic.gillouard@arkea.com</email>
+		</developer>
+	</developers>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
-	<properties>
-		<jenkins.version>1.580.1</jenkins.version>
-	</properties>
-	<repositories>
-		<repository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.yaml</groupId>
@@ -80,6 +77,18 @@
 			<version>1.7.21</version>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -115,5 +124,9 @@
 			</testResource>
 		</testResources>
 	</build>
-
+	<scm>
+		<connection>scm:git:ssh://github.com/jenkinsci/openstack-heat-plugin.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/openstack-heat-plugin.git</developerConnection>
+		<url>https://github.com/jenkinsci/openstack-heat-plugin</url>
+	</scm>
 </project>
