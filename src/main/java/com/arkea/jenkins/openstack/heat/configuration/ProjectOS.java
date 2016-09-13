@@ -6,11 +6,6 @@ import hudson.model.Descriptor;
 import hudson.model.Descriptor.FormException;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
@@ -60,10 +55,8 @@ public class ProjectOS implements Describable<ProjectOS> {
 		this.project = project;
 		this.url = url;
 		if (v3 != null) {
-			if (v3 instanceof JSONObject) {
-				this.checkV3 = true;
-				this.domain = ((JSONObject) v3).getString("domain");
-			}
+			this.checkV3 = true;
+			this.domain = ((JSONObject) v3).getString("domain");
 		}
 		this.user = user;
 		this.password = password;

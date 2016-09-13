@@ -1,6 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
 import com.arkea.jenkins.openstack.heat.orchestration.template.constraints.AbstractConstraint;
@@ -27,13 +28,13 @@ import com.arkea.jenkins.openstack.heat.orchestration.template.constraints.Abstr
  *         for this plugin
  */
 public class ParameterUtils {
-	
+
 	public static boolean checkContraints(Map<String, Parameter> parameters) {
-		for(String key : parameters.keySet()) {
-			Parameter parameter = parameters.get(key);
-			if(!parameter.getConstraints().isEmpty()) {
-				for(AbstractConstraint constraint : parameter.getConstraints()) {
-					if(!constraint.checkConstraint(parameter)) {
+		for (Entry<String, Parameter> entry : parameters.entrySet()) {
+			Parameter parameter = entry.getValue();
+			if (!parameter.getConstraints().isEmpty()) {
+				for (AbstractConstraint constraint : parameter.getConstraints()) {
+					if (!constraint.checkConstraint(parameter)) {
 						return false;
 					}
 				}

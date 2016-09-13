@@ -7,7 +7,6 @@ import hudson.util.FormValidation;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,13 +82,10 @@ public class LoaderFromDir extends AbstractLoader {
 		this.pathHot = pathHot;
 		this.extHot = extHot;
 		if (fromDirEnv != null) {
-			if (fromDirEnv instanceof JSONObject) {
-				this.checkEnv = true;
-				this.pathEnv = ((JSONObject) fromDirEnv).getString("pathEnv");
-				this.extEnv = ((JSONObject) fromDirEnv).getString("extEnv");
-				this.defaultEnv = ((JSONObject) fromDirEnv)
-						.getString("defaultEnv");
-			}
+			this.checkEnv = true;
+			this.pathEnv = ((JSONObject) fromDirEnv).getString("pathEnv");
+			this.extEnv = ((JSONObject) fromDirEnv).getString("extEnv");
+			this.defaultEnv = ((JSONObject) fromDirEnv).getString("defaultEnv");
 		}
 	}
 

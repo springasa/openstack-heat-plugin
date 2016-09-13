@@ -1,6 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import net.sf.json.JSONObject;
@@ -47,11 +48,10 @@ public class BundleMapperUtils {
 		Map<String, Parameter> params = new TreeMap<String, Parameter>();
 		Map<String, Object> parameters = json.getJSONObject("parameters");
 
-		for (String parameter : parameters.keySet()) {
-			Map<String, Object> properties = (Map<String, Object>) parameters
-					.get(parameter);
-			Parameter param = new Parameter(
-					(String) properties.get("name"),
+		for (Entry<String, Object> entry : parameters.entrySet()) {
+			Map<String, Object> properties = (Map<String, Object>) entry
+					.getValue();
+			Parameter param = new Parameter((String) properties.get("name"),
 					TypeMapperUtils.getType((String) properties.get("type")),
 					(String) properties.get("label"),
 					(String) properties.get("description"),
@@ -59,7 +59,7 @@ public class BundleMapperUtils {
 					(boolean) properties.get("hidden"),
 					(String) properties.get("value"),
 					ConstraintUtils.getContraintsFromJSONParameter(properties));
-			params.put(parameter, param);
+			params.put(entry.getKey(), param);
 		}
 
 		bundle.setParameters(params);
@@ -68,13 +68,13 @@ public class BundleMapperUtils {
 		Map<String, Output> exits = new TreeMap<String, Output>();
 		Map<String, Object> outputs = json.getJSONObject("outputs");
 
-		for (String output : outputs.keySet()) {
-			Map<String, Object> properties = (Map<String, Object>) outputs
-					.get(output);
+		for (Entry<String, Object> entry : outputs.entrySet()) {
+			Map<String, Object> properties = (Map<String, Object>) entry
+					.getValue();
 			Output exit = new Output((String) properties.get("name"),
 					(String) properties.get("description"),
 					(String) properties.get("value"));
-			exits.put(output, exit);
+			exits.put(entry.getKey(), exit);
 		}
 
 		bundle.setOutputs(exits);

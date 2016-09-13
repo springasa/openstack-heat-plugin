@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
 import com.arkea.jenkins.openstack.heat.i18n.Messages;
@@ -35,8 +36,7 @@ public class ConsoleLogger {
 	private ConsoleAnnotator annotator;
 	private boolean debug;
 
-	public ConsoleLogger(PrintStream printStream, String pattern,
-			boolean debug) {
+	public ConsoleLogger(PrintStream printStream, String pattern, boolean debug) {
 		this.annotator = new ConsoleAnnotator(printStream, pattern);
 		this.printStream = printStream;
 		this.debug = debug;
@@ -56,9 +56,9 @@ public class ConsoleLogger {
 	public void logDebugMap(String title, Map<String, String> map) {
 		if (debug) {
 			logAnnot(this.annotator.getPattern() + Messages.log_debug(), title);
-			for (String key : map.keySet()) {
+			for (Entry<String, String> entry : map.entrySet()) {
 				logAnnot(this.annotator.getPattern() + Messages.log_debug(),
-						Messages.log_map(key, map.get(key)));
+						Messages.log_map(entry.getKey(), entry.getValue()));
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,8 +40,7 @@ public class Bundle {
 	private Map<String, Output> outputs = new TreeMap<String, Output>();
 	private String envName;
 
-	public Bundle(String hotName, String name, boolean exist,
-			boolean debug) {
+	public Bundle(String hotName, String name, boolean exist, boolean debug) {
 		this.hotName = hotName;
 		this.name = name;
 		this.exist = exist;
@@ -92,17 +92,18 @@ public class Bundle {
 	 */
 	public Map<String, String> getParamsOS() {
 		Map<String, String> paramsOS = new TreeMap<String, String>();
-		for (String key : this.parameters.keySet()) {
-			if (parameters.get(key).getValue() != null
-					&& !StringUtils.isEmpty(parameters.get(key).getValue())) {
-				paramsOS.put(key, convertValue(parameters.get(key).getValue()));
-			} else if (parameters.get(key).getDefaultValue() != null
-					&& !StringUtils.isEmpty(convertValue(parameters.get(key)
+		for (Entry<String, Parameter> entry : this.parameters.entrySet()) {
+			if (entry.getValue().getValue() != null
+					&& !StringUtils.isEmpty(entry.getValue().getValue())) {
+				paramsOS.put(entry.getKey(), convertValue(entry.getValue()
+						.getValue()));
+			} else if (entry.getValue().getDefaultValue() != null
+					&& !StringUtils.isEmpty(convertValue(entry.getValue()
 							.getDefaultValue()))) {
-				paramsOS.put(key, convertValue(parameters.get(key)
+				paramsOS.put(entry.getKey(), convertValue(entry.getValue()
 						.getDefaultValue()));
 			} else {
-				paramsOS.put(key, "");
+				paramsOS.put(entry.getKey(), "");
 			}
 		}
 		return paramsOS;
@@ -120,8 +121,9 @@ public class Bundle {
 		if (value instanceof java.util.LinkedHashMap) {
 			StringBuilder rtn = new StringBuilder("{");
 			java.util.LinkedHashMap<String, String> data = (java.util.LinkedHashMap<String, String>) value;
-			for (String key : data.keySet()) {
-				rtn.append(key).append(":").append(data.get(key)).append(",");
+			for (Entry<String, String> entry : data.entrySet()) {
+				rtn.append(entry.getKey()).append(":").append(entry.getValue())
+						.append(",");
 			}
 			rtn.deleteCharAt(rtn.length() - 1);
 			rtn.append("}");

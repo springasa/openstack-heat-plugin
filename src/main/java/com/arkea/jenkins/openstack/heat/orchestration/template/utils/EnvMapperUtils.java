@@ -2,6 +2,7 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -39,16 +40,18 @@ public class EnvMapperUtils {
 		if (yaml.contains(Constants.PARAMETER_DEFAULTS)) {
 			Map<String, Object> yamlParamDefaults = (Map<String, Object>) yamlObjects
 					.get(Constants.PARAMETER_DEFAULTS);
-			for (String key : yamlParamDefaults.keySet()) {
-				parameter_defaults.put(key, String.valueOf(yamlParamDefaults.get(key)));
+			for (Entry<String, Object> entry : yamlParamDefaults.entrySet()) {
+				parameter_defaults.put(entry.getKey(),
+						String.valueOf(entry.getValue()));
 			}
 		}
 
 		if (yaml.contains(Constants.PARAMETERS)) {
 			Map<String, Object> yamlParams = (Map<String, Object>) yamlObjects
 					.get(Constants.PARAMETERS);
-			for (String key : yamlParams.keySet()) {
-				parameters.put(key, String.valueOf(yamlParams.get(key)));
+			for (Entry<String, Object> entry : yamlParams.entrySet()) {
+				parameters
+						.put(entry.getKey(), String.valueOf(entry.getValue()));
 			}
 		}
 

@@ -34,7 +34,7 @@ public class Parameter {
 	private Type type;
 	private String label = "";
 	private String description = "";
-	private Object defaultValue = new String("");
+	private Object defaultValue = "";
 	private boolean hidden;
 	private String value = "";
 	private List<AbstractConstraint> constraints = null;

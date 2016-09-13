@@ -8,12 +8,13 @@ import hudson.util.VariableResolver;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
+import com.arkea.jenkins.openstack.heat.i18n.Messages;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Output;
 import com.arkea.jenkins.openstack.log.ConsoleLogger;
-import com.arkea.jenkins.openstack.heat.i18n.Messages;
 
 /**
  * @author Credit Mutuel Arkea
@@ -43,8 +44,8 @@ public class EnvVarsUtils {
 	private ConsoleLogger cLog;
 	private AbstractBuild<?, ?> build;
 
-	public EnvVarsUtils(AbstractBuild<?, ?> build,
-			BuildListener listener, ConsoleLogger cLog) {
+	public EnvVarsUtils(AbstractBuild<?, ?> build, BuildListener listener,
+			ConsoleLogger cLog) {
 
 		this.cLog = cLog;
 		this.build = build;
@@ -68,12 +69,13 @@ public class EnvVarsUtils {
 	public Map<String, String> getVars(Map<String, String> toResolves) {
 
 		Map<String, String> resolveds = new TreeMap<String, String>();
-		for (String key : toResolves.keySet()) {
-			resolveds.put(key, this.env.expand(Util.replaceMacro(
-					toResolves.get(key), this.vr)));
-			if (!toResolves.get(key).equals(resolveds.get(key))) {
-				this.cLog.logDebug(Messages.environment_variable(key,
-						toResolves.get(key), resolveds.get(key)));
+		for (Entry<String, String> entry : toResolves.entrySet()) {
+			resolveds.put(entry.getKey(), this.env.expand(Util.replaceMacro(
+					entry.getValue(), this.vr)));
+			if (!entry.getValue().equals(resolveds.get(entry.getKey()))) {
+				this.cLog.logDebug(Messages.environment_variable(
+						entry.getKey(), entry.getValue(),
+						resolveds.get(entry.getKey())));
 			}
 		}
 
@@ -102,20 +104,20 @@ public class EnvVarsUtils {
 	 * @param outputs
 	 *            values possibles
 	 */
-	public void setVars(Map<String, Output> toPuts,
-			Map<String, String> outputs) {
+	public void setVars(Map<String, Output> toPuts, Map<String, String> outputs) {
 
-		for (String key : toPuts.keySet()) {
-			Output output = toPuts.get(key);
+		for (Entry<String, Output> entry : toPuts.entrySet()) {
+			Output output = entry.getValue();
 			// If the value starts with $ then if a variable and it presents in
 			// the list of possibles values
-			if (output.getValue().startsWith("$") && outputs.containsKey(key)) {
+			if (output.getValue().startsWith("$")
+					&& outputs.containsKey(entry.getKey())) {
 				this.cLog.logDebug(Messages.environment_output(
-						output.getValue(), outputs.get(key)));
+						output.getValue(), entry.getValue()));
 				// Push the variable in the context without the $ in the
 				// name
-				PublishEnvVar publish = new PublishEnvVar(output
-						.getValue().substring(1), outputs.get(key));
+				PublishEnvVar publish = new PublishEnvVar(output.getValue()
+						.substring(1), outputs.get(entry.getKey()));
 				this.build.addAction(publish);
 				publish.buildEnvVars(this.build, this.env);
 			}

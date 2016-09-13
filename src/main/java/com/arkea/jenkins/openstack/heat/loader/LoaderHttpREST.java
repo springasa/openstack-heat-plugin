@@ -69,15 +69,13 @@ public class LoaderHttpREST extends AbstractLoader {
 		this.urlListHot = urlListHot;
 		this.urlDetailHot = urlDetailHot;
 		if (httpRESTEnv != null) {
-			if (httpRESTEnv instanceof JSONObject) {
-				this.checkEnv = true;
-				this.urlListEnv = ((JSONObject) httpRESTEnv)
-						.getString("urlListEnv");
-				this.urlDetailEnv = ((JSONObject) httpRESTEnv)
-						.getString("urlDetailEnv");
-				this.defaultEnv = ((JSONObject) httpRESTEnv)
-						.getString("defaultEnv");
-			}
+			this.checkEnv = true;
+			this.urlListEnv = ((JSONObject) httpRESTEnv)
+					.getString("urlListEnv");
+			this.urlDetailEnv = ((JSONObject) httpRESTEnv)
+					.getString("urlDetailEnv");
+			this.defaultEnv = ((JSONObject) httpRESTEnv)
+					.getString("defaultEnv");
 		}
 	}
 
@@ -121,7 +119,8 @@ public class LoaderHttpREST extends AbstractLoader {
 
 		Scanner scanner = null;
 		try {
-			scanner = new Scanner(new URL(path + "/" + name).openStream(), "UTF-8");
+			scanner = new Scanner(new URL(path + "/" + name).openStream(),
+					"UTF-8");
 
 			while (scanner.hasNextLine()) {
 				contents.append(scanner.nextLine()).append('\n');

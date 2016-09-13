@@ -1,6 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.yaml.snakeyaml.Yaml;
@@ -75,10 +76,9 @@ public class HOTMapperUtils {
 		Map<String, Parameter> params = new TreeMap<String, Parameter>();
 		Map<String, Object> parameters = (Map<String, Object>) hotObjects
 				.get(Constants.PARAMETERS);
-		for (String key : parameters.keySet()) {
-			Map<String, Object> data = (Map<String, Object>) parameters
-					.get(key);
-			params.put(key, populateParameter(key, data));
+		for (Entry<String, Object> entry : parameters.entrySet()) {
+			Map<String, Object> data = (Map<String, Object>) entry.getValue();
+			params.put(entry.getKey(), populateParameter(entry.getKey(), data));
 		}
 		return params;
 	}
@@ -130,16 +130,16 @@ public class HOTMapperUtils {
 	 * @return the list of outputs
 	 */
 	@SuppressWarnings("unchecked")
-	private static Map<String, Output> getOutputs(
-			Map<String, Object> hotObjects) {
+	private static Map<String, Output> getOutputs(Map<String, Object> hotObjects) {
 		Map<String, Output> exits = new TreeMap<String, Output>();
 		Map<String, Object> outputs = (Map<String, Object>) hotObjects
 				.get(Constants.OUTPUTS);
-		for (String key : outputs.keySet()) {
+		for (Entry<String, Object> entry : outputs.entrySet()) {
 			exits.put(
-					key,
-					new Output(key, (String) ((Map<String, Object>) outputs
-							.get(key)).get("description")));
+					entry.getKey(),
+					new Output(entry.getKey(),
+							(String) ((Map<String, Object>) entry.getValue())
+									.get("description")));
 		}
 		return exits;
 	}
