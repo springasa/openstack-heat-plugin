@@ -10,6 +10,7 @@ import net.sf.json.JSONObject;
 
 import org.openstack4j.model.heat.Stack;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.client.OpenStack4jClient;
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
 import com.arkea.jenkins.openstack.heat.HOTPlayerSettings;
@@ -146,14 +147,16 @@ public class StackOperationsUtils {
 				Collections
 						.sort(exits, OutputUtils.getComparatorAlphabetical());
 				for (Map<String, Object> output : exits) {
-					if (output.get("output_value") instanceof String) {
-						outputs.put((String) output.get("output_key"),
-								String.valueOf(output.get("output_value")));
+					if (output.get(Constants.OUTPUT_VALUE) instanceof String) {
+						outputs.put((String) output.get(Constants.OUTPUT_KEY),
+								String.valueOf(output
+										.get(Constants.OUTPUT_VALUE)));
 					} else {
 						outputs.put(
-								(String) output.get("output_key"),
+								(String) output.get(Constants.OUTPUT_KEY),
 								JSONObject.fromObject(
-										output.get("output_value")).toString());
+										output.get(Constants.OUTPUT_VALUE))
+										.toString());
 					}
 				}
 				cLog.logDebugMap(Messages.stack_outputs(), outputs);

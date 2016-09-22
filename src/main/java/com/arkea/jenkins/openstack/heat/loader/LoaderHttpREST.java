@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.exception.utils.FormExceptionUtils;
 import com.arkea.jenkins.openstack.heat.i18n.Messages;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -71,11 +72,11 @@ public class LoaderHttpREST extends AbstractLoader {
 		if (httpRESTEnv != null) {
 			this.checkEnv = true;
 			this.urlListEnv = ((JSONObject) httpRESTEnv)
-					.getString("urlListEnv");
+					.getString(Constants.URL_LIST_ENV);
 			this.urlDetailEnv = ((JSONObject) httpRESTEnv)
-					.getString("urlDetailEnv");
+					.getString(Constants.URL_DETAIL_ENV);
 			this.defaultEnv = ((JSONObject) httpRESTEnv)
-					.getString("defaultEnv");
+					.getString(Constants.DEFAULT_ENV);
 		}
 	}
 
@@ -182,7 +183,7 @@ public class LoaderHttpREST extends AbstractLoader {
 		 *             if the url isn't catched
 		 */
 		public FormValidation doTestUrlHot(
-				@QueryParameter("urlListHot") String urlListHot)
+				@QueryParameter(Constants.URL_LIST_HOT) String urlListHot)
 				throws IOException {
 
 			return doTestUrl(urlListHot);
@@ -198,7 +199,7 @@ public class LoaderHttpREST extends AbstractLoader {
 		 *             if the url isn't catched
 		 */
 		public FormValidation doTestUrlEnv(
-				@QueryParameter("urlListEnv") String urlListEnv)
+				@QueryParameter(Constants.URL_LIST_ENV) String urlListEnv)
 				throws IOException {
 
 			return doTestUrl(urlListEnv);

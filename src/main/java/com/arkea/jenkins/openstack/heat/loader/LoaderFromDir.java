@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.exception.utils.FormExceptionUtils;
 import com.arkea.jenkins.openstack.heat.i18n.Messages;
 import com.google.common.base.Strings;
@@ -83,9 +84,9 @@ public class LoaderFromDir extends AbstractLoader {
 		this.extHot = extHot;
 		if (fromDirEnv != null) {
 			this.checkEnv = true;
-			this.pathEnv = ((JSONObject) fromDirEnv).getString("pathEnv");
-			this.extEnv = ((JSONObject) fromDirEnv).getString("extEnv");
-			this.defaultEnv = ((JSONObject) fromDirEnv).getString("defaultEnv");
+			this.pathEnv = ((JSONObject) fromDirEnv).getString(Constants.PATH_ENV);
+			this.extEnv = ((JSONObject) fromDirEnv).getString(Constants.EXT_ENV);
+			this.defaultEnv = ((JSONObject) fromDirEnv).getString(Constants.DEFAULT_ENV);
 		}
 	}
 
@@ -226,8 +227,8 @@ public class LoaderFromDir extends AbstractLoader {
 		 * @return FormValidation with the message result
 		 */
 		public FormValidation doTestPathHot(
-				@QueryParameter("pathHot") String pathHot,
-				@QueryParameter("extHot") String extHot) {
+				@QueryParameter(Constants.PATH_HOT) String pathHot,
+				@QueryParameter(Constants.EXT_HOT) String extHot) {
 
 			if (Strings.isNullOrEmpty(pathHot)) {
 				return FormValidation.warning(Messages.input_filled(Messages
@@ -260,9 +261,9 @@ public class LoaderFromDir extends AbstractLoader {
 		 * @return the result of the test
 		 */
 		public FormValidation doTestPathEnv(
-				@QueryParameter("pathEnv") String pathEnv,
-				@QueryParameter("extEnv") String extEnv,
-				@QueryParameter("defaultEnv") String defaultEnv) {
+				@QueryParameter(Constants.PATH_ENV) String pathEnv,
+				@QueryParameter(Constants.EXT_ENV) String extEnv,
+				@QueryParameter(Constants.DEFAULT_ENV) String defaultEnv) {
 
 			if (Strings.isNullOrEmpty(pathEnv)) {
 				return FormValidation.warning(Messages.input_filled(Messages
@@ -281,7 +282,7 @@ public class LoaderFromDir extends AbstractLoader {
 					if (!fileEnv.isFile()) {
 						return FormValidation.error(Messages
 								.formValidation_errorDefaultNotFound(pathEnv,
-										defaultEnv, extEnv));
+										defaultEnv));
 					}
 				}
 				return FormValidation.ok(Messages.formValidation_success());

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.openstack4j.model.heat.Event;
 import org.openstack4j.model.heat.Stack;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.client.OpenStack4jClient;
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
 import com.arkea.jenkins.openstack.heat.configuration.TimersOS;
@@ -86,7 +87,7 @@ public class ProcessStatus {
 				cLog.logInfo(getTime(System.currentTimeMillis() - startTime)
 						+ Messages.stack_waiting(originalStack.getName(),
 								stack.getStatus()));
-				if (!stack.getStackStatusReason().contains("started")) {
+				if (!stack.getStackStatusReason().contains(Constants.STARTED)) {
 					StackStatus stackStatus = StackStatus.getEnum(stack
 							.getStatus());
 					cLog.logInfo(stack.getStackStatusReason());

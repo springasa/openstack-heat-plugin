@@ -15,6 +15,7 @@ import org.openstack4j.model.heat.builder.StackCreateBuilder;
 import org.openstack4j.openstack.OSFactory;
 import org.openstack4j.openstack.heat.domain.HeatStackCreate;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.configuration.ProjectOS;
 import com.google.common.base.Strings;
 
@@ -59,7 +60,7 @@ public class OpenStack4jClient {
 		ClassLoader orig = Thread.currentThread().getContextClassLoader();
 		Thread.currentThread().setContextClassLoader(
 				Jenkins.getInstance().getPluginManager()
-						.getPlugin("openstack-heat").classLoader);
+						.getPlugin(Constants.OPENSTACK_HEAT).classLoader);
 		try {
 			OSClient<?> osClient = null;
 			if (projectOS.isCheckV3()) {

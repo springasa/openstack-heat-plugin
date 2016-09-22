@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.arkea.jenkins.openstack.heat.orchestration.template.utils.Constants;
+import com.arkea.jenkins.openstack.Constants;
 
 /**
  * @author Credit Mutuel Arkea

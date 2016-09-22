@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Bundle;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Output;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
@@ -95,26 +96,27 @@ public class HOTMapperUtils {
 	private static Parameter populateParameter(String name,
 			Map<String, Object> properties) {
 
-		Parameter param = new Parameter(name,
-				TypeMapperUtils.getType((String) properties.get("type")));
+		Parameter param = new Parameter(
+				name,
+				TypeMapperUtils.getType((String) properties.get(Constants.TYPE)));
 
-		if (properties.get("label") != null) {
-			param.setLabel((String) properties.get("label"));
+		if (properties.get(Constants.LABEL) != null) {
+			param.setLabel((String) properties.get(Constants.LABEL));
 		}
 
-		if (properties.get("description") != null) {
-			param.setDescription((String) properties.get("description"));
+		if (properties.get(Constants.DESCRIPTION) != null) {
+			param.setDescription((String) properties.get(Constants.DESCRIPTION));
 		}
 
-		if (properties.get("default") != null) {
-			param.setDefaultValue(properties.get("default"));
+		if (properties.get(Constants.DEFAULT) != null) {
+			param.setDefaultValue(properties.get(Constants.DEFAULT));
 		}
 
-		if (properties.get("hidden") != null) {
-			param.setHidden((boolean) properties.get("hidden"));
+		if (properties.get(Constants.HIDDEN) != null) {
+			param.setHidden((boolean) properties.get(Constants.HIDDEN));
 		}
 
-		if (properties.get("constraints") != null) {
+		if (properties.get(Constants.CONSTRAINTS) != null) {
 			param.setConstraints(ConstraintUtils
 					.getContraintsToPopulatParameters(properties));
 		}
@@ -139,7 +141,7 @@ public class HOTMapperUtils {
 					entry.getKey(),
 					new Output(entry.getKey(),
 							(String) ((Map<String, Object>) entry.getValue())
-									.get("description")));
+									.get(Constants.DESCRIPTION)));
 		}
 		return exits;
 	}

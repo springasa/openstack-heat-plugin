@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.yaml.snakeyaml.Yaml;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Env;
 
 /**

@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import net.sf.json.JSONObject;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Bundle;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Output;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
@@ -40,24 +41,28 @@ public class BundleMapperUtils {
 		JSONObject json = JSONObject.fromObject(data);
 
 		// Properties globals
-		Bundle bundle = new Bundle(json.getString("hotName"),
-				json.getString("name"), json.getBoolean("exist"),
-				json.getBoolean("debug"));
+		Bundle bundle = new Bundle(json.getString(Constants.HOTNAME),
+				json.getString(Constants.NAME),
+				json.getBoolean(Constants.EXIST),
+				json.getBoolean(Constants.DEBUG));
 
 		// Parameters
 		Map<String, Parameter> params = new TreeMap<String, Parameter>();
-		Map<String, Object> parameters = json.getJSONObject("parameters");
+		Map<String, Object> parameters = json
+				.getJSONObject(Constants.PARAMETERS);
 
 		for (Entry<String, Object> entry : parameters.entrySet()) {
 			Map<String, Object> properties = (Map<String, Object>) entry
 					.getValue();
-			Parameter param = new Parameter((String) properties.get("name"),
-					TypeMapperUtils.getType((String) properties.get("type")),
-					(String) properties.get("label"),
-					(String) properties.get("description"),
-					properties.get("defaultValue"),
-					(boolean) properties.get("hidden"),
-					(String) properties.get("value"),
+			Parameter param = new Parameter(
+					(String) properties.get(Constants.NAME),
+					TypeMapperUtils.getType((String) properties
+							.get(Constants.TYPE)),
+					(String) properties.get(Constants.LABEL),
+					(String) properties.get(Constants.DESCRIPTION),
+					properties.get(Constants.DEFAULT_VALUE),
+					(boolean) properties.get(Constants.HIDDEN),
+					(String) properties.get(Constants.VALUE),
 					ConstraintUtils.getContraintsFromJSONParameter(properties));
 			params.put(entry.getKey(), param);
 		}
@@ -66,14 +71,14 @@ public class BundleMapperUtils {
 
 		// Outputs
 		Map<String, Output> exits = new TreeMap<String, Output>();
-		Map<String, Object> outputs = json.getJSONObject("outputs");
+		Map<String, Object> outputs = json.getJSONObject(Constants.OUTPUTS);
 
 		for (Entry<String, Object> entry : outputs.entrySet()) {
 			Map<String, Object> properties = (Map<String, Object>) entry
 					.getValue();
-			Output exit = new Output((String) properties.get("name"),
-					(String) properties.get("description"),
-					(String) properties.get("value"));
+			Output exit = new Output((String) properties.get(Constants.NAME),
+					(String) properties.get(Constants.DESCRIPTION),
+					(String) properties.get(Constants.VALUE));
 			exits.put(entry.getKey(), exit);
 		}
 

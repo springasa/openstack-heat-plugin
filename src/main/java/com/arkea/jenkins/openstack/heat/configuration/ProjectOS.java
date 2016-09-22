@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.client.OpenStack4jClient;
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
 import com.arkea.jenkins.openstack.exception.utils.FormExceptionUtils;
@@ -56,7 +57,7 @@ public class ProjectOS implements Describable<ProjectOS> {
 		this.url = url;
 		if (v3 != null) {
 			this.checkV3 = true;
-			this.domain = ((JSONObject) v3).getString("domain");
+			this.domain = ((JSONObject) v3).getString(Constants.DOMAIN);
 		}
 		this.user = user;
 		this.password = password;
@@ -184,12 +185,12 @@ public class ProjectOS implements Describable<ProjectOS> {
 		 *             if the validation fails
 		 */
 		public FormValidation doTestConnection(
-				@QueryParameter("project") String project,
-				@QueryParameter("url") String url,
-				@QueryParameter("v3") boolean v3,
-				@QueryParameter("domain") String domain,
-				@QueryParameter("user") String user,
-				@QueryParameter("password") Secret password)
+				@QueryParameter(Constants.PROJECT) String project,
+				@QueryParameter(Constants.URL) String url,
+				@QueryParameter(Constants.V3) boolean v3,
+				@QueryParameter(Constants.DOMAIN) String domain,
+				@QueryParameter(Constants.USER) String user,
+				@QueryParameter(Constants.PASSWORD) Secret password)
 				throws FormException {
 			try {
 

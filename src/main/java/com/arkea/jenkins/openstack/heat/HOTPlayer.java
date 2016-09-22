@@ -8,7 +8,6 @@ import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 
-import java.io.IOException;
 import java.util.List;
 
 import jenkins.model.Jenkins;
@@ -20,6 +19,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.client.OpenStack4jClient;
 import com.arkea.jenkins.openstack.exception.utils.ExceptionUtils;
 import com.arkea.jenkins.openstack.heat.configuration.ProjectOS;
@@ -255,7 +255,7 @@ public class HOTPlayer extends Builder {
 		public HOTPlayer newInstance(StaplerRequest req, JSONObject formData)
 				throws hudson.model.Descriptor.FormException {
 			// Creation and transformation from JSON to Object JAVA
-			String data = formData.getString("bundle");
+			String data = formData.getString(Constants.BUNDLE);
 			if (Strings.isNullOrEmpty(data)) {
 				throw new FormException(
 						Messages.bundle_configurationException(),
@@ -265,10 +265,10 @@ public class HOTPlayer extends Builder {
 			if (!bundle.getParameters().isEmpty()) {
 				ParameterUtils.checkContraints(bundle.getParameters());
 			}
-			if (!Strings.isNullOrEmpty(formData.getString("envName"))) {
-				bundle.setEnvName(formData.getString("envName"));
+			if (!Strings.isNullOrEmpty(formData.getString(Constants.ENV_NAME))) {
+				bundle.setEnvName(formData.getString(Constants.ENV_NAME));
 			}
-			return new HOTPlayer(formData.getString("project"), bundle);
+			return new HOTPlayer(formData.getString(Constants.PROJECT), bundle);
 		}
 	}
 

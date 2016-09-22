@@ -1,4 +1,4 @@
-package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
+package com.arkea.jenkins.openstack;
 
 /**
  * @author Credit Mutuel Arkea
@@ -21,6 +21,18 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
  */
 public class Constants {
 
+	public final static String OPENSTACK_HEAT = "openstack-heat";
+	public final static String BUNDLE = "bundle";
+	public final static String HOTNAME = "hotName";
+	public final static String NAME = "name";
+	public final static String EXIST = "exist";
+	public final static String DEBUG = "debug";
+	public final static String TYPE = "type";
+	public final static String LABEL = "label";
+	public final static String DEFAULT_VALUE = "defaultValue";
+	public final static String DEFAULT = "default";
+	public final static String HIDDEN = "hidden";
+	public final static String VALUE = "value";
 	public final static String PARAMETER_DEFAULTS = "parameter_defaults";
 	public final static String PARAMETERS = "parameters";
 	public final static String OUTPUTS = "outputs";
@@ -35,5 +47,23 @@ public class Constants {
 	public final static String DESCRIPTION = "description";
 	public final static String LIMITS = "limits";
 	public final static String KEY = "key";
-	
+	public final static String DOMAIN = "domain";
+	public final static String PROJECT = "project";
+	public final static String URL = "url";
+	public final static String V3 = "v3";
+	public final static String USER = "user";
+	public final static String PASSWORD = "password";
+	public final static String PATH_HOT = "pathHot";
+	public final static String PATH_ENV = "pathEnv";
+	public final static String EXT_HOT = "extHot";
+	public final static String EXT_ENV = "extEnv";
+	public final static String DEFAULT_ENV = "defaultEnv";
+	public final static String URL_LIST_ENV = "urlListEnv";
+	public final static String URL_DETAIL_ENV = "urlDetailEnv";
+	public final static String URL_LIST_HOT = "urlListHot";
+	public final static String OUTPUT_KEY = "output_key";
+	public final static String OUTPUT_VALUE = "output_value";
+	public final static String ENV_NAME = "envName";
+	public final static String STARTED = "started";
+
 }

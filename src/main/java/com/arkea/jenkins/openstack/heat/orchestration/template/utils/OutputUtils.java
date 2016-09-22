@@ -3,6 +3,8 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.utils;
 import java.util.Comparator;
 import java.util.Map;
 
+import com.arkea.jenkins.openstack.Constants;
+
 /**
  * @author Credit Mutuel Arkea
  * 
@@ -33,8 +35,8 @@ public class OutputUtils {
 	public static Comparator<Map<String, Object>> getComparatorAlphabetical() {
 		return new Comparator<Map<String, Object>>() {
 			public int compare(Map<String, Object> m1, Map<String, Object> m2) {
-				return ((String) m1.get("output_key")).compareTo((String) m2
-						.get("output_key"));
+				return ((String) m1.get(Constants.OUTPUT_KEY)).compareTo((String) m2
+						.get(Constants.OUTPUT_KEY));
 			}
 		};
 	}

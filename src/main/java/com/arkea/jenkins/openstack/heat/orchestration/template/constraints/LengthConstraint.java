@@ -3,8 +3,8 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
-import com.arkea.jenkins.openstack.heat.orchestration.template.utils.Constants;
 
 /**
  * @author Credit Mutuel Arkea

@@ -1,5 +1,7 @@
 package com.arkea.jenkins.openstack.exception.utils;
 
+import com.arkea.jenkins.openstack.heat.i18n.Messages;
+
 import hudson.model.Descriptor.FormException;
 
 /**
@@ -27,8 +29,7 @@ public class FormExceptionUtils {
 
 	public static FormException getFormException(String labelField,
 			String nameField) {
-		return new FormException(" The input " + labelField + " is wrong ! ",
-				nameField);
+		return new FormException(Messages.input_wrong(labelField), nameField);
 	}
 
 }

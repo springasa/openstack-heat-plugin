@@ -1,5 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 
+import com.arkea.jenkins.openstack.Constants;
+
 /**
  * @author Credit Mutuel Arkea
  * 
@@ -23,8 +25,10 @@ package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
  *
  */
 public enum ConstraintType {
-	allowed_pattern("allowed_pattern"), allowed_values("allowed_values"), length(
-			"length"), range("range"), custom_constraint("custom_constraint");
+	allowed_pattern(Constants.CONSTRAINT_ALLOWED_PATTERN), allowed_values(
+			Constants.CONSTRAINT_ALLOWED_VALUES), length(
+			Constants.CONSTRAINT_LENGTH), range(Constants.CONSTRAINT_RANGE), custom_constraint(
+			Constants.CONSTRAINT_CUSTOM_CONSTRAINT);
 
 	private String name;
 
