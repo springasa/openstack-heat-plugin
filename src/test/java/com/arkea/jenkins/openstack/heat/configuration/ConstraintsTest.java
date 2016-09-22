@@ -76,6 +76,37 @@ public class ConstraintsTest extends AbstractTest {
 						.checkConstraint(
 								bundle.getParameters().get("testString")));
 
+		// testStringMin contraints
+		assertFalse(
+				"StringMin too short ?",
+				bundle.getParameters()
+						.get("testStringMin")
+						.getConstraints()
+						.get("length")
+						.checkConstraint(
+								bundle.getParameters().get("testStringMin")));
+		bundle.getParameters().get("testStringMin").setValue("testtest");
+		assertTrue("StringMin constraints correct ?", bundle.getParameters()
+				.get("testStringMin").getConstraints().get("length")
+				.checkConstraint(bundle.getParameters().get("testStringMin")));
+
+		// testStringMax contraints
+		bundle.getParameters().get("testStringMax")
+				.setValue("testtesttesttesttest");
+		assertFalse(
+				"StringMax too long ?",
+				bundle.getParameters()
+						.get("testStringMax")
+						.getConstraints()
+						.get("length")
+						.checkConstraint(
+								bundle.getParameters().get("testStringMax")));
+		bundle.getParameters().get("testStringMax")
+				.setValue("testtesttesttest");
+		assertTrue("StringMax constraints correct ?", bundle.getParameters()
+				.get("testStringMax").getConstraints().get("length")
+				.checkConstraint(bundle.getParameters().get("testStringMax")));
+
 		// testNumber contraints
 		assertFalse("Number too big ?", bundle.getParameters()
 				.get("testNumber").getConstraints().get("range")
@@ -98,6 +129,35 @@ public class ConstraintsTest extends AbstractTest {
 						.get("range")
 						.checkConstraint(
 								bundle.getParameters().get("testNumber")));
+
+		// testNumberMin contraints
+		bundle.getParameters().get("testNumberMin").setValue("-2.3");
+		assertFalse(
+				"NumberMin too short ?",
+				bundle.getParameters()
+						.get("testNumberMin")
+						.getConstraints()
+						.get("range")
+						.checkConstraint(
+								bundle.getParameters().get("testNumberMin")));
+		bundle.getParameters().get("testNumberMin").setValue("0.75");
+		assertTrue("NumberMin constraints correct ?", bundle.getParameters()
+				.get("testNumberMin").getConstraints().get("range")
+				.checkConstraint(bundle.getParameters().get("testNumberMin")));
+
+		// testNumberMax contraints
+		assertFalse(
+				"NumberMax too big ?",
+				bundle.getParameters()
+						.get("testNumberMax")
+						.getConstraints()
+						.get("range")
+						.checkConstraint(
+								bundle.getParameters().get("testNumberMax")));
+		bundle.getParameters().get("testNumberMax").setValue("0.75");
+		assertTrue("NumberMax constraints correct ?", bundle.getParameters()
+				.get("testNumberMax").getConstraints().get("range")
+				.checkConstraint(bundle.getParameters().get("testNumberMax")));
 
 		// testBoolean contraints
 		assertFalse(

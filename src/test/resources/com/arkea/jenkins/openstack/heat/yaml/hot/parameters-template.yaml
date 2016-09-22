@@ -26,6 +26,24 @@ parameters:
     constraints:
       - length: { min: 8, max: 16 }
         description: String must be between 8 and 16 characters
+  testStringMin:
+    type: string
+    label: testStringMin
+    description: test a length string minimum
+    default: "string"
+    hidden : false
+    constraints:
+      - length: { min: 8 }
+        description: String must be have 8 characters minimum
+  testStringMax:
+    type: string
+    label: testStringMax
+    description: test a length string maximum
+    default: "string"
+    hidden : false
+    constraints:
+      - length: { max: 16 }
+        description: String must be have 16 characters maximum
   testNumber:
     type: number
     label: testNumber
@@ -34,6 +52,22 @@ parameters:
     hidden : true
     constraints:
       - range: { min: -1.5, max: 2.5 }
+  testNumberMin:
+    type: number
+    label: testNumberMin
+    description: test a range number minimum
+    default: "33"
+    hidden : true
+    constraints:
+      - range: { min: -1.5 }
+  testNumberMax:
+    type: number
+    label: testNumberMax
+    description: test a range number maximum
+    default: "33"
+    hidden : true
+    constraints:
+      - range: { max: 2.5 }
   testJson:
     type: json
     label: testJson
