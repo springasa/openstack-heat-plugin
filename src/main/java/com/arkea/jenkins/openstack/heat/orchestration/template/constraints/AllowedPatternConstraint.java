@@ -28,28 +28,28 @@ import com.google.common.base.Strings;
  */
 public class AllowedPatternConstraint extends AbstractConstraint {
 
-	private String allowedPattern;
+	private String allowed_pattern;
 
 	public AllowedPatternConstraint() {
 		super(ConstraintType.allowed_pattern);
 	}
 
-	public AllowedPatternConstraint(String pattern) {
+	public AllowedPatternConstraint(String allowed_pattern) {
 		super(ConstraintType.allowed_pattern);
-		this.allowedPattern = pattern;
+		this.allowed_pattern = allowed_pattern;
 	}
 
-	public String getAllowedPattern() {
-		return allowedPattern;
+	public String getAllowed_pattern() {
+		return allowed_pattern;
 	}
 
-	public void setAllowedPattern(String allowedPattern) {
-		this.allowedPattern = allowedPattern;
+	public void setAllowed_pattern(String allowed_pattern) {
+		this.allowed_pattern = allowed_pattern;
 	}
 
 	@Override
 	public boolean checkConstraint(Parameter parameter) {
-		Pattern p = Pattern.compile(allowedPattern);
+		Pattern p = Pattern.compile(allowed_pattern);
 		if (!Strings.isNullOrEmpty(parameter.getValue())) {
 			return p.matcher(parameter.getValue()).matches();
 		} else if (!Strings.isNullOrEmpty((String) parameter.getDefaultValue())) {

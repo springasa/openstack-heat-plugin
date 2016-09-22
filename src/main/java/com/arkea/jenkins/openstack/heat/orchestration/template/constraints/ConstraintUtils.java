@@ -1,11 +1,12 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONSerializer;
+import com.arkea.jenkins.openstack.heat.orchestration.template.utils.Constants;
 
 /**
  * @author Credit Mutuel Arkea
@@ -34,163 +35,153 @@ import net.sf.json.JSONSerializer;
 public class ConstraintUtils {
 
 	/**
-	 * Build a constraint bean list from JSON constraints part parsing in entry
+	 * Build a constraint bean map from JSON constraints part parsing in entry
 	 * file.
 	 * 
 	 * @param properties
 	 *            the constraints list String structure
 	 * @return
-	 *         the equivalent constraints JAVA list
+	 *         the equivalent constraints JAVA Map
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<AbstractConstraint> getContraintsToPopulatParameters(
+	@SuppressWarnings("unchecked")
+	public static Map<String, AbstractConstraint> getContraintsToPopulatParameters(
 			Map<String, Object> properties) {
-		List<AbstractConstraint> constraintsList = new ArrayList<AbstractConstraint>();
+		Map<String, AbstractConstraint> constraints = new HashMap<String, AbstractConstraint>();
 
 		if (properties != null) {
-			if (properties.get("constraints") != null) {
-				if (properties.get("constraints") instanceof ArrayList) {
-					ArrayList list = (ArrayList) (properties.get("constraints"));
-					for (int i = 0; i < list.size(); i++) {
-						if (list.get(i) instanceof Map<?, ?>) {
-							String description = "";
-							Map<String, Object> jsonConstraint = (Map<String, Object>) list
-									.get(i);
-							if (jsonConstraint.get("allowed_values") != null) {
-								ArrayList<String> allowedValuesList = (ArrayList<String>) jsonConstraint
-										.get("allowed_values");
-								AllowedValuesConstraint avc = new AllowedValuesConstraint(
-										allowedValuesList);
-								description = (String) jsonConstraint
-										.get("description");
-								avc.setDescription(description);
-								constraintsList.add(avc);
-							} else if (jsonConstraint.get("length") != null) {
-								Map<String, Integer> lengthList = (Map<String, Integer>) jsonConstraint
-										.get("length");
-								LengthConstraint lc = new LengthConstraint(
-										lengthList.get("min"),
-										lengthList.get("max"));
-								description = (String) jsonConstraint
-										.get("description");
-								lc.setDescription(description);
-								constraintsList.add(lc);
-							} else if (jsonConstraint.get("range") != null) {
-								Map<String, Double> rangeList = (Map<String, Double>) jsonConstraint
-										.get("range");
-								RangeConstraint rc = new RangeConstraint(
-										rangeList.get("min"),
-										rangeList.get("max"));
-								description = (String) jsonConstraint
-										.get("description");
-								rc.setDescription(description);
-								constraintsList.add(rc);
-							} else if (jsonConstraint.get("allowed_pattern") != null) {
-								String pattern = (String) jsonConstraint
-										.get("allowed_pattern");
-								AllowedPatternConstraint apc = new AllowedPatternConstraint(
-										pattern);
-								description = (String) jsonConstraint
-										.get("description");
-								apc.setDescription(description);
-								constraintsList.add(apc);
-							} else if (jsonConstraint.get("custom_constraint") != null) {
-								String key = (String) jsonConstraint
-										.get("custom_constraint");
-								CustomConstraint cc = new CustomConstraint(key);
-								description = (String) jsonConstraint
-										.get("description");
-								cc.setDescription(description);
-								constraintsList.add(cc);
-							}
-						}
-					}
+			if (properties.get(Constants.CONSTRAINTS) != null) {
+				List<Map<String, Object>> cons = (List<Map<String, Object>>) properties
+						.get(Constants.CONSTRAINTS);
+				for (Map<String, Object> entry : cons) {
+					AbstractConstraint constraint = populateConstraint(entry);
+					constraints
+							.put(constraint.getType().getConstraintTypeName(),
+									populateConstraint(entry));
 				}
 			}
 		}
 
-		return constraintsList;
+		return constraints;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static AbstractConstraint populateConstraint(
+			Map<String, Object> jsonConstraint) {
+
+		AbstractConstraint constraints = null;
+		String description = "";
+
+		for (Entry<String, Object> entry : jsonConstraint.entrySet()) {
+			switch (entry.getKey()) {
+			case Constants.CONSTRAINT_ALLOWED_VALUES:
+				Map<String, String> allowedValues = new HashMap<String, String>();
+				for (Object value : (ArrayList<Object>) entry.getValue()) {
+					allowedValues.put(value.toString(), value.toString());
+				}
+				constraints = new AllowedValuesConstraint(allowedValues);
+				break;
+			case Constants.CONSTRAINT_LENGTH:
+				constraints = new LengthConstraint();
+				Map<String, Integer> lengthList = (Map<String, Integer>) entry
+						.getValue();
+				if (lengthList.get(Constants.MIN) != null) {
+					((LengthConstraint) constraints).getLimits().put(
+							Constants.MIN, lengthList.get(Constants.MIN));
+				}
+				if (lengthList.get(Constants.MAX) != null) {
+					((LengthConstraint) constraints).getLimits().put(
+							Constants.MAX, lengthList.get(Constants.MAX));
+				}
+				break;
+			case Constants.CONSTRAINT_RANGE:
+				Map<String, Double> rangeList = (Map<String, Double>) entry
+						.getValue();
+				constraints = new RangeConstraint();
+				if (rangeList.get(Constants.MIN) != null) {
+					((RangeConstraint) constraints).getLimits().put(
+							Constants.MIN, rangeList.get(Constants.MIN));
+				}
+				if (rangeList.get(Constants.MAX) != null) {
+					((RangeConstraint) constraints).getLimits().put(
+							Constants.MAX, rangeList.get(Constants.MAX));
+				}
+				break;
+			case Constants.CONSTRAINT_ALLOWED_PATTERN:
+				constraints = new AllowedPatternConstraint(
+						(String) entry.getValue());
+				break;
+			case Constants.CONSTRAINT_CUSTOM_CONSTRAINT:
+				constraints = new CustomConstraint((String) entry.getValue());
+				break;
+
+			case Constants.DESCRIPTION:
+				description = (String) entry.getValue();
+				break;
+			}
+		}
+		constraints.setDescription(description);
+		return constraints;
+
 	}
 
 	/**
-	 * Build a constraint bean list from JSON constraints part parsing in JSON
+	 * Build a constraint bean map from JSON constraints part parsing in JSON
 	 * parameter.
 	 * 
 	 * @param properties
 	 *            the constraints list JSON structure
 	 * @return
-	 *         the equivalent constraints JAVA list
+	 *         the equivalent constraints JAVA map
 	 */
-	@SuppressWarnings({ "unchecked" })
-	public static List<AbstractConstraint> getContraintsFromJSONParameter(
+	@SuppressWarnings("unchecked")
+	public static Map<String, AbstractConstraint> getContraintsFromJSONParameter(
 			Map<String, Object> properties) {
-		List<AbstractConstraint> constraintsList = new ArrayList<AbstractConstraint>();
+		Map<String, AbstractConstraint> constraints = new HashMap<String, AbstractConstraint>();
 
-		if (properties != null) {
-			if (properties.get("constraints") != null) {
-				JSONArray jsonConstraint = JSONArray.fromObject(properties
-						.get("constraints"));
-
-				String constraintType = "";
-				for (int i = 0; i < jsonConstraint.size(); i++) {
-					Map<String, Object> constraintMap = (Map<String, Object>) jsonConstraint
-							.get(i);
-					constraintType = (String) constraintMap.get("type");
-					String description = "";
-
-					switch (constraintType) {
-					case "allowed_pattern":
-						String pattern = (String) constraintMap
-								.get("allowedPattern");
-						AllowedPatternConstraint apc = new AllowedPatternConstraint(
-								pattern);
-						description = (String) constraintMap.get("description");
-						apc.setDescription(description);
-						constraintsList.add(apc);
-						break;
-					case "allowed_values":
-						ArrayList<String> allowedValuesList = (ArrayList<String>) JSONSerializer
-								.toJava(JSONArray.fromObject(constraintMap
-										.get("allowedValues")));
-						AllowedValuesConstraint avc = new AllowedValuesConstraint(
-								allowedValuesList);
-						description = (String) constraintMap.get("description");
-						avc.setDescription(description);
-						constraintsList.add(avc);
-						break;
-					case "length":
-						LengthConstraint lc = new LengthConstraint(
-								(Integer) constraintMap.get("minLength"),
-								(Integer) constraintMap.get("maxLength"));
-						description = (String) constraintMap.get("description");
-						lc.setDescription(description);
-						constraintsList.add(lc);
-						break;
-					case "range":
-						RangeConstraint rc = new RangeConstraint(
-								(Double) constraintMap.get("minRange"),
-								(Double) constraintMap.get("maxRange"));
-						description = (String) constraintMap.get("description");
-						rc.setDescription(description);
-						constraintsList.add(rc);
-						break;
-					case "custom_constraint":
-						CustomConstraint cc = new CustomConstraint(
-								(String) constraintMap.get("key"));
-						description = (String) constraintMap.get("description");
-						cc.setDescription(description);
-						constraintsList.add(cc);
-						break;
-					}
-
-					constraintsList.get(constraintsList.size() - 1)
-							.setDescription(
-									(String) constraintMap.get("description"));
+		if (properties.get(Constants.CONSTRAINTS) != null
+				&& !"null".equals(properties.get(Constants.CONSTRAINTS).toString())) {
+			Map<String, Map<String, Object>> cons = (Map<String, Map<String, Object>>) properties
+					.get(Constants.CONSTRAINTS);
+			for (Entry<String, Map<String, Object>> entry : cons.entrySet()) {
+				switch (entry.getKey()) {
+				case Constants.CONSTRAINT_ALLOWED_PATTERN:
+					AllowedPatternConstraint apc = new AllowedPatternConstraint(
+							(String) entry.getValue().get(Constants.CONSTRAINT_ALLOWED_PATTERN));
+					apc.setDescription((String) entry.getValue().get(
+							Constants.DESCRIPTION));
+					constraints.put(entry.getKey(), apc);
+					break;
+				case Constants.CONSTRAINT_ALLOWED_VALUES:
+					AllowedValuesConstraint avc = new AllowedValuesConstraint(
+							(Map<String, String>) entry.getValue().get(
+									Constants.CONSTRAINT_ALLOWED_VALUES));
+					avc.setDescription((String) entry.getValue().get(
+							Constants.DESCRIPTION));
+					constraints.put(entry.getKey(), avc);
+					break;
+				case Constants.CONSTRAINT_LENGTH:
+					LengthConstraint lc = new LengthConstraint(
+							(Map<String, Integer>) entry.getValue().get(
+									Constants.LIMITS), (String) entry.getValue().get(
+									Constants.DESCRIPTION));
+					constraints.put(entry.getKey(), lc);
+					break;
+				case Constants.CONSTRAINT_RANGE:
+					RangeConstraint rc = new RangeConstraint(
+							(Map<String, Double>) entry.getValue().get(Constants.LIMITS),
+							(String) entry.getValue().get(Constants.DESCRIPTION));
+					constraints.put(entry.getKey(), rc);
+					break;
+				case Constants.CONSTRAINT_CUSTOM_CONSTRAINT:
+					CustomConstraint cc = new CustomConstraint((String) entry
+							.getValue().get(Constants.KEY));
+					cc.setDescription((String) entry.getValue().get(
+							Constants.DESCRIPTION));
+					constraints.put(entry.getKey(), cc);
+					break;
 				}
 			}
 		}
-
-		return constraintsList;
+		return constraints;
 	}
-
 }

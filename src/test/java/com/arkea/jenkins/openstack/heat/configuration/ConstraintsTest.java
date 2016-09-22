@@ -53,7 +53,7 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testString")
 						.getConstraints()
-						.get(0)
+						.get("length")
 						.checkConstraint(
 								bundle.getParameters().get("testString")));
 		bundle.getParameters().get("testString")
@@ -63,7 +63,7 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testString")
 						.getConstraints()
-						.get(0)
+						.get("length")
 						.checkConstraint(
 								bundle.getParameters().get("testString")));
 		bundle.getParameters().get("testString").setValue("testtesttesttest");
@@ -72,26 +72,21 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testString")
 						.getConstraints()
-						.get(0)
+						.get("length")
 						.checkConstraint(
 								bundle.getParameters().get("testString")));
 
 		// testNumber contraints
-		assertFalse(
-				"Number too big ?",
-				bundle.getParameters()
-						.get("testNumber")
-						.getConstraints()
-						.get(0)
-						.checkConstraint(
-								bundle.getParameters().get("testNumber")));
+		assertFalse("Number too big ?", bundle.getParameters()
+				.get("testNumber").getConstraints().get("range")
+				.checkConstraint(bundle.getParameters().get("testNumber")));
 		bundle.getParameters().get("testNumber").setValue("-2.3");
 		assertFalse(
 				"Number too small ?",
 				bundle.getParameters()
 						.get("testNumber")
 						.getConstraints()
-						.get(0)
+						.get("range")
 						.checkConstraint(
 								bundle.getParameters().get("testNumber")));
 		bundle.getParameters().get("testNumber").setValue("0.75");
@@ -100,7 +95,7 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testNumber")
 						.getConstraints()
-						.get(0)
+						.get("range")
 						.checkConstraint(
 								bundle.getParameters().get("testNumber")));
 
@@ -110,7 +105,7 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testBoolean")
 						.getConstraints()
-						.get(0)
+						.get("allowed_values")
 						.checkConstraint(
 								bundle.getParameters().get("testBoolean")));
 		bundle.getParameters().get("testBoolean").setValue("false");
@@ -119,7 +114,7 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testBoolean")
 						.getConstraints()
-						.get(0)
+						.get("allowed_values")
 						.checkConstraint(
 								bundle.getParameters().get("testBoolean")));
 		bundle.getParameters().get("testBoolean").setValue("true");
@@ -128,46 +123,55 @@ public class ConstraintsTest extends AbstractTest {
 				bundle.getParameters()
 						.get("testBoolean")
 						.getConstraints()
-						.get(0)
+						.get("allowed_values")
 						.checkConstraint(
 								bundle.getParameters().get("testBoolean")));
 
 		// testConstraints contraints
-		assertTrue("Constraints begins begin by UpperCase ?", bundle
-				.getParameters().get("testConstraints").getConstraints().get(0)
-				.checkConstraint(bundle.getParameters().get("testConstraints")));
+		assertTrue(
+				"Constraints begins begin by UpperCase ?",
+				bundle.getParameters()
+						.get("testConstraints")
+						.getConstraints()
+						.get("allowed_pattern")
+						.checkConstraint(
+								bundle.getParameters().get("testConstraints")));
 		assertFalse(
 				"Constraints is too short ?",
 				bundle.getParameters()
 						.get("testConstraints")
 						.getConstraints()
-						.get(1)
+						.get("length")
 						.checkConstraint(
 								bundle.getParameters().get("testConstraints")));
 		bundle.getParameters().get("testConstraints").setValue("testtesttest");
 		assertFalse("Constraints has not UpperCase ?", bundle.getParameters()
-				.get("testConstraints").getConstraints().get(0)
+				.get("testConstraints").getConstraints().get("allowed_pattern")
 				.checkConstraint(bundle.getParameters().get("testConstraints")));
 		assertTrue("Constraints has the good length  ?", bundle.getParameters()
-				.get("testConstraints").getConstraints().get(1)
+				.get("testConstraints").getConstraints().get("length")
 				.checkConstraint(bundle.getParameters().get("testConstraints")));
 		bundle.getParameters().get("testConstraints").setValue("Testtesttest");
 		assertTrue("Contraints UpperCase is true ?", bundle.getParameters()
-				.get("testConstraints").getConstraints().get(0)
+				.get("testConstraints").getConstraints().get("allowed_pattern")
 				.checkConstraint(bundle.getParameters().get("testConstraints")));
 		assertTrue(
 				"Contraints Length is true ?",
 				bundle.getParameters()
 						.get("testConstraints")
 						.getConstraints()
-						.get(0)
+						.get("length")
 						.checkConstraint(
 								bundle.getParameters().get("testConstraints")));
 
 		// testJson custom contraint
-		assertTrue("Custom constraint return always true ?", bundle
-				.getParameters().get("testJson").getConstraints().get(0)
-				.checkConstraint(bundle.getParameters().get("testJson")));
+		assertTrue(
+				"Custom constraint return always true ?",
+				bundle.getParameters()
+						.get("testJson")
+						.getConstraints()
+						.get("custom_constraint")
+						.checkConstraint(bundle.getParameters().get("testJson")));
 
 		// Check all constraints
 		assertTrue("All the constraints are OK ?",

@@ -1,6 +1,10 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
+import com.arkea.jenkins.openstack.heat.orchestration.template.utils.Constants;
 
 /**
  * @author Credit Mutuel Arkea
@@ -26,43 +30,37 @@ import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
 
 public class LengthConstraint extends AbstractConstraint {
 
-	private int minLength;
-	private int maxLength;
+	private Map<String, Integer> limits = new HashMap<String, Integer>();
 
 	LengthConstraint() {
 		super(ConstraintType.length);
 	}
 
-	LengthConstraint(int min, int max) {
+	LengthConstraint(Map<String, Integer> limits, String description) {
 		this();
-		this.minLength = min;
-		this.maxLength = max;
+		this.setLimits(limits);
+		this.description = description;
 	}
 
-	public int getMinLength() {
-		return minLength;
+	public Map<String, Integer> getLimits() {
+		return limits;
 	}
 
-	public void setMinLength(int minLength) {
-		this.minLength = minLength;
-	}
-
-	public int getMaxLength() {
-		return maxLength;
-	}
-
-	public void setMaxLength(int maxLength) {
-		this.maxLength = maxLength;
+	public void setLimits(Map<String, Integer> limits) {
+		this.limits = limits;
 	}
 
 	@Override
 	public boolean checkConstraint(Parameter parameter) {
 		int length = parameter.getValue().length() == 0 ? ((String) parameter
 				.getDefaultValue()).length() : parameter.getValue().length();
-		if (length >= minLength && length <= maxLength) {
-			return true;
-		} else {
+		if (limits.containsKey(Constants.MIN)
+				&& length < limits.get(Constants.MIN)) {
+			return false;
+		} else if (limits.containsKey(Constants.MAX)
+				&& length > limits.get(Constants.MAX)) {
 			return false;
 		}
+		return true;
 	}
 }

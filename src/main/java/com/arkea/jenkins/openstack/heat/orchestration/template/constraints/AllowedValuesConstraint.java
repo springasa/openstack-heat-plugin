@@ -1,6 +1,7 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
 import com.google.common.base.Strings;
@@ -28,23 +29,23 @@ import com.google.common.base.Strings;
  */
 public class AllowedValuesConstraint extends AbstractConstraint {
 
-	private ArrayList<String> allowedValues;
+	private Map<String, String> allowed_values;
 
 	AllowedValuesConstraint() {
 		super(ConstraintType.allowed_values);
 	}
 
-	AllowedValuesConstraint(ArrayList<String> allowedValues) {
+	AllowedValuesConstraint(Map<String, String> allowed_values) {
 		this();
-		this.allowedValues = allowedValues;
+		this.allowed_values = allowed_values;
 	}
 
-	public ArrayList<String> getAllowedValues() {
-		return allowedValues;
+	public Map<String, String> getAllowed_values() {
+		return allowed_values;
 	}
 
-	public void setAllowedValues(ArrayList<String> allowedValues) {
-		this.allowedValues = allowedValues;
+	public void setAllowed_values(Map<String, String> allowed_values) {
+		this.allowed_values = allowed_values;
 	}
 
 	@Override
@@ -53,8 +54,8 @@ public class AllowedValuesConstraint extends AbstractConstraint {
 		if (!Strings.isNullOrEmpty(parameter.getValue())) {
 			testValue = parameter.getValue();
 		}
-		for (int i = 0; i < allowedValues.size(); i++) {
-			if (testValue.equals(String.valueOf(allowedValues.get(i)))) {
+		for (Entry<String, String> entry : allowed_values.entrySet()) {
+			if (testValue.equals(entry.getValue())) {
 				return true;
 			}
 		}

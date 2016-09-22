@@ -28,7 +28,7 @@ import com.arkea.jenkins.openstack.heat.orchestration.template.utils.ConstraintT
 public abstract class AbstractConstraint {
 
 	private ConstraintType type;
-	private String description;
+	protected String description;
 
 	AbstractConstraint() {
 	}

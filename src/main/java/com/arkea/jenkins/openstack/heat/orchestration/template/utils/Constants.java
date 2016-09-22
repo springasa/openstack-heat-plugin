@@ -24,4 +24,16 @@ public class Constants {
 	public final static String PARAMETER_DEFAULTS = "parameter_defaults";
 	public final static String PARAMETERS = "parameters";
 	public final static String OUTPUTS = "outputs";
+	public final static String CONSTRAINTS = "constraints";
+	public final static String CONSTRAINT_LENGTH = "length";
+	public final static String CONSTRAINT_RANGE = "range";
+	public final static String CONSTRAINT_ALLOWED_VALUES = "allowed_values";
+	public final static String CONSTRAINT_ALLOWED_PATTERN = "allowed_pattern";
+	public final static String CONSTRAINT_CUSTOM_CONSTRAINT = "custom_constraint";
+	public final static String MAX = "max";
+	public final static String MIN = "min";
+	public final static String DESCRIPTION = "description";
+	public final static String LIMITS = "limits";
+	public final static String KEY = "key";
+	
 }

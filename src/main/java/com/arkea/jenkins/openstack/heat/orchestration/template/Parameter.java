@@ -1,6 +1,6 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template;
 
-import java.util.List;
+import java.util.Map;
 
 import com.arkea.jenkins.openstack.heat.orchestration.template.constraints.AbstractConstraint;
 
@@ -37,7 +37,7 @@ public class Parameter {
 	private Object defaultValue = "";
 	private boolean hidden;
 	private String value = "";
-	private List<AbstractConstraint> constraints = null;
+	private Map<String, AbstractConstraint> constraints = null;
 
 	public Parameter(String name, Type type) {
 		this.name = name;
@@ -59,7 +59,7 @@ public class Parameter {
 	public Parameter(String name, Type type, String label,
 			String description, Object defaultValue,
 			boolean hidden, String value,
-			List<AbstractConstraint> constraints) {
+			Map<String, AbstractConstraint> constraints) {
 		this.name = name;
 		this.type = type;
 		this.label = label;
@@ -118,11 +118,11 @@ public class Parameter {
 		this.value = value;
 	}
 
-	public void setConstraints(List<AbstractConstraint> constraints) {
+	public void setConstraints(Map<String, AbstractConstraint> constraints) {
 		this.constraints = constraints;
 	}
 
-	public List<AbstractConstraint> getConstraints() {
+	public Map<String, AbstractConstraint> getConstraints() {
 		return constraints;
 	}
 }

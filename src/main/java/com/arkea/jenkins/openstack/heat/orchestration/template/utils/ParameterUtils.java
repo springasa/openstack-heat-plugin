@@ -33,8 +33,8 @@ public class ParameterUtils {
 		for (Entry<String, Parameter> entry : parameters.entrySet()) {
 			Parameter parameter = entry.getValue();
 			if (!parameter.getConstraints().isEmpty()) {
-				for (AbstractConstraint constraint : parameter.getConstraints()) {
-					if (!constraint.checkConstraint(parameter)) {
+				for(Entry<String, AbstractConstraint> constraint : parameter.getConstraints().entrySet()) {
+					if (!constraint.getValue().checkConstraint(parameter)) {
 						return false;
 					}
 				}

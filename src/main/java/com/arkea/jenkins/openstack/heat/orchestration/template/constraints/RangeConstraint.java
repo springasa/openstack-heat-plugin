@@ -1,6 +1,10 @@
 package com.arkea.jenkins.openstack.heat.orchestration.template.constraints;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.arkea.jenkins.openstack.heat.orchestration.template.Parameter;
+import com.arkea.jenkins.openstack.heat.orchestration.template.utils.Constants;
 import com.google.common.base.Strings;
 
 /**
@@ -27,45 +31,43 @@ import com.google.common.base.Strings;
 
 public class RangeConstraint extends AbstractConstraint {
 
-	private double minRange;
-	private double maxRange;
+	private Map<String, Double> limits = new HashMap<String, Double>();
 
 	RangeConstraint() {
 		super(ConstraintType.range);
 	}
 
-	RangeConstraint(double min, double max) {
+	RangeConstraint(Map<String, Double> limits, String description) {
 		this();
-		this.minRange = min;
-		this.maxRange = max;
+		this.limits = limits;
+		this.description = description;
 	}
 
-	public double getMinRange() {
-		return minRange;
+	public Map<String, Double> getLimits() {
+		return limits;
 	}
 
-	public void setMinRange(double minRange) {
-		this.minRange = minRange;
-	}
-
-	public double getMaxRange() {
-		return maxRange;
-	}
-
-	public void setMaxRange(double maxRange) {
-		this.maxRange = maxRange;
+	public void setLimits(Map<String, Double> limits) {
+		this.limits = limits;
 	}
 
 	@Override
 	public boolean checkConstraint(Parameter parameter) {
+		double value = 0;
 		if (!Strings.isNullOrEmpty(parameter.getValue())) {
-			double value = Double.valueOf(parameter.getValue());
-			return (value >= minRange && value <= maxRange);
+			value = Double.valueOf(parameter.getValue());
 		} else if (!Strings.isNullOrEmpty((String) parameter.getDefaultValue())) {
-			double value = Double.valueOf((String) parameter.getDefaultValue());
-			return (value >= minRange && value <= maxRange);
-		} else {
-			return false;
+			value = Double.valueOf((String) parameter.getDefaultValue());
 		}
+		boolean rtn = true;
+		if (this.limits.containsKey(Constants.MIN)
+				&& value < this.limits.get(Constants.MIN)) {
+			rtn = false;
+		} else if (this.limits.containsKey(Constants.MAX)
+				&& value > this.limits.get(Constants.MAX)) {
+			rtn = false;
+		}
+		return rtn;
 	}
+
 }
