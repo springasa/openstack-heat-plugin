@@ -58,9 +58,8 @@ public class Constants {
 	public final static String EXT_HOT = "extHot";
 	public final static String EXT_ENV = "extEnv";
 	public final static String DEFAULT_ENV = "defaultEnv";
-	public final static String URL_LIST_ENV = "urlListEnv";
-	public final static String URL_DETAIL_ENV = "urlDetailEnv";
-	public final static String URL_LIST_HOT = "urlListHot";
+	public final static String URL_ENV = "urlEnv";
+	public final static String URL_HOT = "urlHot";
 	public final static String OUTPUT_KEY = "output_key";
 	public final static String OUTPUT_VALUE = "output_value";
 	public final static String ENV_NAME = "envName";

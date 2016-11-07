@@ -67,22 +67,16 @@ public class HOTPlayerSettingsDataTest extends AbstractTest {
 		// Test LoaderFromDir setting
 		hPS.setLoader(null);
 		CheckDataUtils.checkFormException(hPS, "loader");
-		hPS.setLoader(new LoaderHttpREST("", "", null));
-		CheckDataUtils.checkFormException(hPS, "urlListHot");
-		hPS.setLoader(new LoaderHttpREST("urlListHot", "", null));
-		CheckDataUtils.checkFormException(hPS, "urlDetailHot");
-		hPS.setLoader(new LoaderFromDir("urlListHot", "urlDetailHot", null));
+		hPS.setLoader(new LoaderHttpREST("", null));
+		CheckDataUtils.checkFormException(hPS, "urlHot");
+		hPS.setLoader(new LoaderHttpREST("urlHot", null));
 		JSONObject httpRESTEnv = new JSONObject();
-		httpRESTEnv.put("urlListEnv", "");
-		httpRESTEnv.put("urlDetailEnv", "");
+		httpRESTEnv.put("urlEnv", "");
 		httpRESTEnv.put("defaultEnv", "");
-		hPS.setLoader(new LoaderHttpREST("urlListHot", "urlDetailHot", httpRESTEnv));
-		CheckDataUtils.checkFormException(hPS, "urlListEnv");
-		httpRESTEnv.put("urlListEnv", "urlListEnv");
-		hPS.setLoader(new LoaderHttpREST("urlListHot", "urlDetailHot", httpRESTEnv));
-		CheckDataUtils.checkFormException(hPS, "urlDetailEnv");
-		httpRESTEnv.put("urlDetailEnv", "urlDetailEnv");
-		hPS.setLoader(new LoaderHttpREST("urlListHot", "urlDetailHot", httpRESTEnv));
+		hPS.setLoader(new LoaderHttpREST("urlHot", httpRESTEnv));
+		CheckDataUtils.checkFormException(hPS, "urlEnv");
+		httpRESTEnv.put("urlEnv", "urlEnv");
+		hPS.setLoader(new LoaderHttpREST("urlHot", httpRESTEnv));
 		
 		// Test Project setting
 		CheckDataUtils

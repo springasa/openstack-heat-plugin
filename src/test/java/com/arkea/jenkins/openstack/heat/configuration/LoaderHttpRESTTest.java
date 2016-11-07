@@ -67,10 +67,10 @@ public class LoaderHttpRESTTest extends AbstractTest {
 		
 		form.getInputByName("httpRESTEnv").click();
 
-		form.getInputByName("_.urlListHot").setValueAttribute(
+		form.getInputByName("_.urlHot").setValueAttribute(
 				"http://localhost:8180/testHot/listHots");
 		
-		form.getInputByName("_.urlListEnv").setValueAttribute(
+		form.getInputByName("_.urlEnv").setValueAttribute(
 				"http://localhost:8180/testHot/listEnvs");
 
 		// Test call url hot

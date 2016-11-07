@@ -100,7 +100,7 @@ function generateParameters(params, uid) {
 					}
 					field += ' onchange="updateBundle(\'parameters\', this.name, this.options[this.selectedIndex].value, \''
 							+ uid + '\')" >';
-					var allowed_values = constraint["allowedValues"];
+					var allowed_values = constraint["allowed_values"];
 					for ( var allowed in allowed_values) {
 						var aValue = allowed_values[allowed];
 						if (aValue == selectedVal) {

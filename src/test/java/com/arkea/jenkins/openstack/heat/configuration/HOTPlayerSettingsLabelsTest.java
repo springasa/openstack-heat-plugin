@@ -115,16 +115,12 @@ public class HOTPlayerSettingsLabelsTest extends AbstractTest {
 	private void testLoaderHttpREST(String html) {
 
 		// LoaderHttpREST
-		assertTrue("Url to access to the Hots files list is present ?",
-				html.contains("Url to access to the Hots files list"));
-		assertTrue("Url to get the Hots detail is present ?",
-				html.contains("Url to get the Hots detail"));
-		assertTrue("Use optional url to Envs File is present ?",
-				html.contains("Use optional url to Envs File"));
-		assertTrue("Url to access to the Envs files list is present ?",
-				html.contains("Url to access to the Envs files list"));
-		assertTrue("Url to get the Envs detail is present ?",
-				html.contains("Url to get the Envs detail"));
+		assertTrue("Url to access to the Hots API Rest is present ?",
+				html.contains("Url to access to the Hot API Rest"));
+		assertTrue("Use optional url to Env API Rest is present ?",
+				html.contains("Use optional url to Env API Rest"));
+		assertTrue("Url to access to the Env API Rest is present ?",
+				html.contains("Url to access to the Env API Rest"));
 		assertTrue("Default full Env filename is present ?",
 				html.contains("Default full Env filename"));
 	}

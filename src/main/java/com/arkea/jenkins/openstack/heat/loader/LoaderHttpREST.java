@@ -49,55 +49,40 @@ public class LoaderHttpREST extends AbstractLoader {
 	private static Logger LOG = Logger
 			.getLogger(LoaderHttpREST.class.getName());
 
-	private String urlListHot;
-
-	private String urlDetailHot;
+	private String urlHot;
 
 	/**
 	 * Files Env activate
 	 */
 	private boolean checkEnv = false;
 
-	private String urlListEnv;
-
-	private String urlDetailEnv;
+	private String urlEnv;
 
 	private String defaultEnv;
 
 	@DataBoundConstructor
-	public LoaderHttpREST(String urlListHot, String urlDetailHot,
+	public LoaderHttpREST(String urlHot,
 			JSONObject httpRESTEnv) {
-		this.urlListHot = urlListHot;
-		this.urlDetailHot = urlDetailHot;
+		this.urlHot = urlHot;
 		if (httpRESTEnv != null) {
 			this.checkEnv = true;
-			this.urlListEnv = ((JSONObject) httpRESTEnv)
-					.getString(Constants.URL_LIST_ENV);
-			this.urlDetailEnv = ((JSONObject) httpRESTEnv)
-					.getString(Constants.URL_DETAIL_ENV);
+			this.urlEnv = ((JSONObject) httpRESTEnv)
+					.getString(Constants.URL_ENV);
 			this.defaultEnv = ((JSONObject) httpRESTEnv)
 					.getString(Constants.DEFAULT_ENV);
 		}
 	}
 
-	public String getUrlListHot() {
-		return urlListHot;
-	}
-
-	public String getUrlDetailHot() {
-		return urlDetailHot;
+	public String getUrlHot() {
+		return urlHot;
 	}
 
 	public boolean isCheckEnv() {
 		return checkEnv;
 	}
 
-	public String getUrlListEnv() {
-		return urlListEnv;
-	}
-
-	public String getUrlDetailEnv() {
-		return urlDetailEnv;
+	public String getUrlEnv() {
+		return urlEnv;
 	}
 
 	public String getDefaultEnv() {
@@ -106,12 +91,12 @@ public class LoaderHttpREST extends AbstractLoader {
 
 	// @Override
 	public String[] getHots() {
-		return LoaderHttpRESTDescriptor.getListFiles(this.urlListHot);
+		return LoaderHttpRESTDescriptor.getListFiles(this.urlHot);
 	}
 
 	// @Override
 	public String getHot(String hotName) {
-		return getFile(this.urlDetailHot, hotName);
+		return getFile(this.urlHot, hotName);
 	}
 
 	private String getFile(String path, String name) {
@@ -142,22 +127,14 @@ public class LoaderHttpREST extends AbstractLoader {
 
 	@Override
 	public boolean checkData() throws FormException {
-		if (Strings.isNullOrEmpty(urlListHot)) {
+		if (Strings.isNullOrEmpty(urlHot)) {
 			throw FormExceptionUtils.getFormException(
-					Messages.urlListHot_label(), Messages.urlListHot_name());
-		} else if (Strings.isNullOrEmpty(urlDetailHot)) {
-			throw FormExceptionUtils
-					.getFormException(Messages.urlDetailHot_label(),
-							Messages.urlDetailHot_name());
+					Messages.urlHot_label(), Messages.urlHot_name());
 		} else if (isCheckEnv()) {
-			if (Strings.isNullOrEmpty(urlListEnv)) {
+			if (Strings.isNullOrEmpty(urlEnv)) {
 				throw FormExceptionUtils
-						.getFormException(Messages.urlListEnv_label(),
-								Messages.urlListEnv_name());
-			} else if (Strings.isNullOrEmpty(urlDetailEnv)) {
-				throw FormExceptionUtils.getFormException(
-						Messages.urlDetailEnv_label(),
-						Messages.urlDetailEnv_name());
+						.getFormException(Messages.urlEnv_label(),
+								Messages.urlEnv_name());
 			}
 		}
 
@@ -176,33 +153,33 @@ public class LoaderHttpREST extends AbstractLoader {
 		/**
 		 * Test if the url Hot is valid
 		 * 
-		 * @param urlListHot
+		 * @param urlHot
 		 *            to test
 		 * @return the result of the test
 		 * @throws IOException
 		 *             if the url isn't catched
 		 */
 		public FormValidation doTestUrlHot(
-				@QueryParameter(Constants.URL_LIST_HOT) String urlListHot)
+				@QueryParameter(Constants.URL_HOT) String urlHot)
 				throws IOException {
 
-			return doTestUrl(urlListHot);
+			return doTestUrl(urlHot);
 		}
 
 		/**
 		 * Test if the url Env is valid
 		 * 
-		 * @param urlListEnv
+		 * @param urlEnv
 		 *            to test
 		 * @return the result of the test
 		 * @throws IOException
 		 *             if the url isn't catched
 		 */
 		public FormValidation doTestUrlEnv(
-				@QueryParameter(Constants.URL_LIST_ENV) String urlListEnv)
+				@QueryParameter(Constants.URL_ENV) String urlEnv)
 				throws IOException {
 
-			return doTestUrl(urlListEnv);
+			return doTestUrl(urlEnv);
 		}
 
 		/**
@@ -216,7 +193,7 @@ public class LoaderHttpREST extends AbstractLoader {
 		private FormValidation doTestUrl(String url) throws IOException {
 			if (Strings.isNullOrEmpty(url)) {
 				return FormValidation.warning(Messages.input_filled(Messages
-						.urlListHot_label()));
+						.urlHot_label()));
 			}
 
 			String[] data = getListFiles(url);
@@ -245,26 +222,26 @@ public class LoaderHttpREST extends AbstractLoader {
 
 	@Override
 	public String getFullPathHot(String hotName) {
-		return urlDetailHot + "/" + hotName;
+		return urlHot + "/" + hotName;
 	}
 
 	@Override
 	public String getFullPathEnv(String envFile) {
-		return urlDetailEnv + "/" + envFile;
+		return urlEnv + "/" + envFile;
 	}
 
 	@Override
 	public String[] getEnvs() {
-		return LoaderHttpRESTDescriptor.getListFiles(this.urlListEnv);
+		return LoaderHttpRESTDescriptor.getListFiles(this.urlEnv);
 	}
 
 	@Override
 	public String getEnv(String envName) {
-		return getFile(this.urlDetailEnv, envName);
+		return getFile(this.urlEnv, envName);
 	}
 
 	@Override
 	public String getDefaultEnvFileName() {
-		return urlDetailEnv + "/" + defaultEnv;
+		return urlEnv + "/" + defaultEnv;
 	}
 }
