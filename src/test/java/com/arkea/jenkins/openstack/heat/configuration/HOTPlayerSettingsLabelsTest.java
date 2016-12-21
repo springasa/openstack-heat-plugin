@@ -108,8 +108,8 @@ public class HOTPlayerSettingsLabelsTest extends AbstractTest {
 				html.contains("Path to the directory Env"));
 		assertTrue("Extension for the Env File is present ?",
 				html.contains("Extension for the Env File"));
-		assertTrue("Default full Env filename is present ?",
-				html.contains("Default full Env filename"));
+		assertTrue("Default Env filename is present ?",
+				html.contains("Default Env filename"));
 	}
 
 	private void testLoaderHttpREST(String html) {
@@ -121,8 +121,8 @@ public class HOTPlayerSettingsLabelsTest extends AbstractTest {
 				html.contains("Use optional url to Env API Rest"));
 		assertTrue("Url to access to the Env API Rest is present ?",
 				html.contains("Url to access to the Env API Rest"));
-		assertTrue("Default full Env filename is present ?",
-				html.contains("Default full Env filename"));
+		assertTrue("Default Env filename is present ?",
+				html.contains("Default Env filename"));
 	}
 
 

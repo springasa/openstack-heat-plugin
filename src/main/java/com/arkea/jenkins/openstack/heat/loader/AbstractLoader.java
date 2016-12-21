@@ -46,7 +46,7 @@ public abstract class AbstractLoader implements Describable<AbstractLoader>,
 	public abstract String[] getEnvs();
 
 	/**
-	 * Method to get the Default full Env filename with extension
+	 * Method to get the Default Env filename with extension
 	 *
 	 * @return the Default Env filename with extension
 	 */
