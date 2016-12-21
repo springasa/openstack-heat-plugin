@@ -242,6 +242,6 @@ public class LoaderHttpREST extends AbstractLoader {
 
 	@Override
 	public String getDefaultEnvFileName() {
-		return urlEnv + "/" + defaultEnv;
+		return defaultEnv;
 	}
 }
