@@ -72,7 +72,6 @@
 			if(document.getElementById('selectEnvName${UID}') != undefined) {
 				var selEnv = document.getElementById('selectEnvName${UID}');
 				var selected = -1;
-				alert('${descriptor.defaultEnvFileName}');
 				for(var i=0; i &lt; selEnv.length; i++) {
 					if(selEnv.options[i].value == name) {
 						selected = i;
