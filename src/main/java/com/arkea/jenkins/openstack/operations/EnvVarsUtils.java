@@ -113,7 +113,7 @@ public class EnvVarsUtils {
 			if (output.getValue().startsWith("$")
 					&& outputs.containsKey(entry.getKey())) {
 				this.cLog.logDebug(Messages.environment_output(
-						output.getValue(), entry.getValue()));
+						output.getValue(), outputs.get(entry.getKey())));
 				// Push the variable in the context without the $ in the
 				// name
 				PublishEnvVar publish = new PublishEnvVar(output.getValue()
