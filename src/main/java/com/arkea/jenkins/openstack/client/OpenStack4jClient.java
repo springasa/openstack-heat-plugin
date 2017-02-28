@@ -3,8 +3,6 @@ package com.arkea.jenkins.openstack.client;
 import java.util.List;
 import java.util.Map;
 
-import jenkins.model.Jenkins;
-
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient;
 import org.openstack4j.api.heat.HeatService;
@@ -15,7 +13,6 @@ import org.openstack4j.model.heat.builder.StackCreateBuilder;
 import org.openstack4j.openstack.OSFactory;
 import org.openstack4j.openstack.heat.domain.HeatStackCreate;
 
-import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.heat.configuration.ProjectOS;
 import com.google.common.base.Strings;
 
@@ -54,38 +51,26 @@ public class OpenStack4jClient {
 		// org.openstack4j.core.transport.internal.HttpLoggingFilter.class
 		// .getName(), "true");
 
-		// Associate the currentThread to the classpath plugin to find the
-		// OpenStack4j Library and come back to the original after creating
-		// heatService
-		ClassLoader orig = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(
-				Jenkins.getInstance().getPluginManager()
-						.getPlugin(Constants.OPENSTACK_HEAT).classLoader);
-		try {
-			OSClient<?> osClient = null;
-			if (projectOS.isCheckV3()) {
-				osClient = OSFactory
-						.builderV3()
-						.endpoint(projectOS.getUrl())
-						.credentials(projectOS.getUser(),
-								projectOS.getPassword().getPlainText(),
-								Identifier.byName(projectOS.getDomain()))
-						.scopeToProject(
-								Identifier.byName(projectOS.getProject()),
-								Identifier.byName(projectOS.getDomain()))
-						.authenticate();
-			} else {
-				osClient = OSFactory
-						.builderV2()
-						.endpoint(projectOS.getUrl())
-						.credentials(projectOS.getUser(),
-								projectOS.getPassword().getPlainText())
-						.tenantName(projectOS.getProject()).authenticate();
-			}
-			this.heatService = osClient.heat();
-		} finally {
-			Thread.currentThread().setContextClassLoader(orig);
+		OSClient<?> osClient = null;
+		if (projectOS.isCheckV3()) {
+			osClient = OSFactory
+					.builderV3()
+					.endpoint(projectOS.getUrl())
+					.credentials(projectOS.getUser(),
+							projectOS.getPassword().getPlainText(),
+							Identifier.byName(projectOS.getDomain()))
+					.scopeToProject(Identifier.byName(projectOS.getProject()),
+							Identifier.byName(projectOS.getDomain()))
+					.authenticate();
+		} else {
+			osClient = OSFactory
+					.builderV2()
+					.endpoint(projectOS.getUrl())
+					.credentials(projectOS.getUser(),
+							projectOS.getPassword().getPlainText())
+					.tenantName(projectOS.getProject()).authenticate();
 		}
+		this.heatService = osClient.heat();
 
 	}
 
