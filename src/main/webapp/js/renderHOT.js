@@ -60,6 +60,27 @@ function generateProperties(props, uid) {
 	return properties;
 }
 
+function generateCleanStack(project, stack) {
+	if (project == "undefined") {
+		project = "";
+	}
+	if (stack == "undefined") {
+		stack = "";
+	}
+	var cleaninfo = '<table name="cleanStackInfo" width="100%"><tbody><tr><td colspan="3"><div class="section-header">Stack to delete</div></td></tr>';
+	cleaninfo += '<tr><td class="setting-leftspace"></td><td class="setting-name">Stack name : </td><td class="setting-main"><input type="text" class="setting-input"';
+	cleaninfo += ' value="' + stack + '" ';
+	cleaninfo += ' disabled="true" ';
+	cleaninfo += 'name="stack"' + '></input></td></tr>';
+
+	cleaninfo += '<tr><td class="setting-leftspace"></td><td class="setting-name">Project(Tenant) : </td><td class="setting-main"><input type="text" class="setting-input"';
+	cleaninfo += ' value="' + project + '" ';
+	cleaninfo += ' disabled="true" ';
+	cleaninfo += 'name="project"' + '></input></td></tr>';
+    cleaninfo += '</tbody></table>'
+	return cleaninfo;
+}
+
 function generateParameters(params, uid) {
 	var param = undefined;
 	var update = '';

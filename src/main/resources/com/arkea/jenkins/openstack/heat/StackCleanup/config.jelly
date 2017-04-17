@@ -1,0 +1,79 @@
+<!--
+/**
+ *
+ * Copyright 2017 Freeingo Sure
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+-->
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler">
+    <script type="text/javascript" src="${resURL}/scripts/prototype.js" />
+    <script type="text/javascript" src="${resURL}/plugin/openstack-heat/js/renderHOT.js" />
+    <f:block>
+        <div id="cleanStackIds"></div>
+        <div id="addResultId"></div>
+        <input type='button' onclick='getBundlesFromHotPlayerSetting()' value='Get HOT player stack'/>
+    </f:block>
+
+    <script type="text/javascript">
+        function getBundles() {
+            var inst = <st:bind value="${instance}"/>
+            if (inst != null) {
+                getBundlesLastConfiged(inst);
+            } else {
+                getBundlesFromHotPlayerSetting();
+            }
+        }
+
+        function getBundlesFromHotPlayerSetting() {
+            var hp = <st:bind value="${descriptor}"/>
+            var hotPlayers = $$('div[descriptorid="com.arkea.jenkins.openstack.heat.HOTPlayer"]');
+            $(cleanStackIds).innerHTML = "";
+            hotPlayers.each(function(hotPlayer) {
+                //return of select method is array, it should only have one element
+                bundleArray = $(hotPlayer).select('input[id^="bundleid"]');
+                projectArray = $(hotPlayer).select('[id^="selectProject"]');
+
+                //bundleArray.first().value
+                var data = JSON.parse($F(bundleArray.first()));
+                stackName = data["name"]
+                projectSelect = projectArray.first();
+                //Judge the type of projectSelect (select or input?)
+                projectName = "";
+                if (projectSelect.tagName == "INPUT") {
+                    projectName = projectSelect.value;
+                } else {
+                    projectName = projectSelect.options[projectSelect.selectedIndex].value;
+                }
+                $(cleanStackIds).innerHTML += generateCleanStack(projectName, stackName);
+            });
+        }
+
+        function getBundlesLastConfiged(inst) {
+            inst.getStackHotMap(function(t) {
+                var stackHotMap = t.responseObject();
+                $(cleanStackIds).innerHTML = "";
+                for (stack in stackHotMap) {
+                    $(cleanStackIds).innerHTML += generateCleanStack(stackHotMap[stack], stack);
+                }
+            });
+        }
+
+        if (document.getElementById('cleanStackIds') != null) {
+            getBundles();
+        }
+    </script>
+
+</j:jelly>
