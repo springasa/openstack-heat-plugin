@@ -3,6 +3,7 @@ package com.arkea.jenkins.openstack.heat;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.ServletException;
 
 import hudson.Extension;
 import hudson.Launcher;
@@ -18,7 +19,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.bind.JavaScriptMethod;
 
 import com.arkea.jenkins.openstack.Constants;
 import com.arkea.jenkins.openstack.client.OpenStack4jClient;
@@ -43,14 +43,6 @@ public class StackCleanup extends Publisher {
         /* Constructor for unittest, clientOS is mock */
         this.stackHotMap = stackHotMap;
         this.clientOS = clientOS;
-    }
-
-    /**
-     * @return the bundle in JSON Format, it's easier to the render JavaScript
-     */
-    @JavaScriptMethod
-    public JSONObject getStackHotMap() {
-        return JSONObject.fromObject(this.stackHotMap);
     }
 
     @Override
@@ -141,22 +133,31 @@ public class StackCleanup extends Publisher {
         @Override
         public Publisher newInstance(StaplerRequest req, JSONObject formData) throws FormException {
             Map<String, String> stackHotMap = new HashMap<>();
-            if (formData.containsKey(Constants.CLEANSTACK_INFO)) {
-                Object info = formData.get(Constants.CLEANSTACK_INFO);
-                if (info instanceof JSONObject) {
-                    putToCleanStackMap(stackHotMap, formData.getJSONObject(Constants.CLEANSTACK_INFO));
-                } else if (info instanceof JSONArray) {
-                    JSONArray cleanStackInfos = formData.getJSONArray(Constants.CLEANSTACK_INFO);
-                    for (Object cleanStackInfo : cleanStackInfos) {
-                        putToCleanStackMap(stackHotMap, (JSONObject) cleanStackInfo);
+            try {
+                Object form = req.getSubmittedForm().get(Constants.BUILDER);
+                if (form instanceof JSONObject) {
+                    validateAndPutToCleanStackMap(stackHotMap, req.getSubmittedForm().getJSONObject(Constants.BUILDER));
+                } else if (form instanceof JSONArray) {
+                    JSONArray builders = req.getSubmittedForm().getJSONArray(Constants.BUILDER);
+                    for (Object objBuilder : builders) {
+                        validateAndPutToCleanStackMap(stackHotMap, (JSONObject)objBuilder);
                     }
                 }
+            } catch (ServletException e) {
+                e.printStackTrace();
             }
+
             return new StackCleanup(stackHotMap);
         }
 
+        private void validateAndPutToCleanStackMap(Map<String, String> stackHotMap, JSONObject builder) {
+            if (builder.containsKey(Constants.HOTNAME)) {
+                putToCleanStackMap(stackHotMap, builder);
+            }
+        }
+
         private void putToCleanStackMap(Map<String, String> stackHotMap, Map<String, Object> cleanStackMap) {
-            String stack = (String) cleanStackMap.get(Constants.STACKNAME);
+            String stack = (String) cleanStackMap.get(Constants.NAME);
             String project = (String) cleanStackMap.get(Constants.PROJECT);
             stackHotMap.put(stack, project);
         }

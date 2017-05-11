@@ -95,16 +95,16 @@
     <j:choose>
     	<j:when test="${size(projects) == 1}">
     		<f:invisibleEntry>
-    			<f:textbox field="project" value="${projects.get(0).getProject()}" id="selectProject${UID}" />
+				<f:textbox field="project" value="${projects.get(0).getProject()}" />
     		</f:invisibleEntry>
     	</j:when>
     	<j:otherwise>
-    		<j:set var="project" value="${instance.indexProject}"/>
+			<j:set var="project" value="${instance.indexProject}"/>
     		<f:entry name="Project" title="${%HOTPlayer.project.title}" field="project" >
-    			<select class="setting-input" name="project" id="selectProject${UID}">
+				<select class="setting-input" name="project">
     				<j:forEach var="item" items="${descriptor.projects}">
 						<f:option selected="${item.project == project}">${item.project}</f:option>
-            		</j:forEach>
+					</j:forEach>
     			</select>
     		</f:entry>
     	</j:otherwise>
