@@ -50,14 +50,23 @@ public class StackCleanup extends Publisher {
                            BuildListener listener) throws IOException, InterruptedException {
         ConsoleLogger cLog = new ConsoleLogger(listener.getLogger(),
                 "HOT Player", true);
-
+        // Variable in context
+        EnvVarsUtils eVU = new EnvVarsUtils(build, listener, cLog);
         for (String key : stackHotMap.keySet()) {
-            final String stackName = key;
-            final String project = stackHotMap.get(key);
-            try {
-                // Variable in context
-                EnvVarsUtils eVU = new EnvVarsUtils(build, listener, cLog);
+            String key1 = key;
+            if (key.startsWith("$")) {
+                key1 = key.substring(1);
+            }
 
+            final String stackName = eVU.getEnv(key1);
+            if (stackName == null) {
+                cLog.logWarn("Can't find stack name for " + key1);
+                continue;
+            }
+
+            final String project = stackHotMap.get(key);
+
+            try {
                 // Global configuration
                 HOTPlayerSettings hPS = (HOTPlayerSettings) Jenkins.getInstance()
                         .getDescriptor(HOTPlayerSettings.class);
@@ -157,9 +166,9 @@ public class StackCleanup extends Publisher {
         }
 
         private void putToCleanStackMap(Map<String, String> stackHotMap, Map<String, Object> cleanStackMap) {
-            String stack = (String) cleanStackMap.get(Constants.NAME);
+            String stackEnvName = (String) cleanStackMap.get(Constants.ENV_STACKNAME);
             String project = (String) cleanStackMap.get(Constants.PROJECT);
-            stackHotMap.put(stack, project);
+            stackHotMap.put(stackEnvName, project);
         }
     }
 }
