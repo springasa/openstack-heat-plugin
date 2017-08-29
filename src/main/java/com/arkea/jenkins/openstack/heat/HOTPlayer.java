@@ -116,7 +116,7 @@ public class HOTPlayer extends Builder {
 	}
 
 	private String getUniStackName() {
-		return "stack_" + jobname + "_" + buildNo;
+		return "stack_" + DigestUtils.sha1Hex(jobname + buildNo);
 	}
 	@SuppressWarnings("rawtypes")
 	@Override
