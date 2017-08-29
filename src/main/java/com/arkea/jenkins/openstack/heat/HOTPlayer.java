@@ -62,6 +62,8 @@ public class HOTPlayer extends Builder {
 	private boolean deleteExist;
 	private boolean debug;
 	private OpenStack4jClient clientOS;
+	private String jobname;
+	private String buildNo;
 
 	@DataBoundConstructor
 	public HOTPlayer(String project, String hotName, String envContent, String envStackName, boolean deleteExist, boolean debug) {
@@ -114,12 +116,14 @@ public class HOTPlayer extends Builder {
 	}
 
 	private String getUniStackName() {
-		return "stack_" + DigestUtils.sha1Hex(this.toString());
+		return "stack_" + jobname + "_" + buildNo;
 	}
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean perform(AbstractBuild build, Launcher launcher,
 			BuildListener listener) {
+		jobname = build.getProject().getName();
+		buildNo = String.valueOf(build.getNumber());
 		final String stackName = getUniStackName();
 		// Specific logger with color
 		ConsoleLogger cLog = new ConsoleLogger(listener.getLogger(),
